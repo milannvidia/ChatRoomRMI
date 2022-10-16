@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.Vector;
 
 
-public class ChatServer extends UnicastRemoteObject implements ChatInterface {
+public abstract class ChatServer extends UnicastRemoteObject implements ChatInterface {
     private Vector<Chatter> chatters;
 
     public ChatServer() throws RemoteException{
@@ -25,10 +25,10 @@ public class ChatServer extends UnicastRemoteObject implements ChatInterface {
         try{
             ChatInterface hello = new ChatServer();
             Naming.rebind("rmi://" + hostName + "/" + serviceName, hello);
-            System.out.println("Group Chat RMI Server is running...");
+            System.out.println("Group Chat is running...");
         }
         catch(Exception e){
-            System.out.println("Server had problems starting");
+            e.printStackTrace();
         }
     }
 
@@ -41,8 +41,8 @@ public class ChatServer extends UnicastRemoteObject implements ChatInterface {
         }
     }
 
-    public void updateChat(String name, String nextPost) throws RemoteException {
-        String message =  name + " : " + nextPost + "\n";
+    public void updateChat(String name, String chatMessage) throws RemoteException {
+        String message =  name + " : " + chatMessage + "\n";
         sendToAll(message);
     }
 
